@@ -1,0 +1,13 @@
+#buttonHolder {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  /* justify-content: space-between; */
+  width: 50%;
+  height: 100px;
+  margin: auto;
+}
+
+#scoreHolder {
+  float: left;
+}
