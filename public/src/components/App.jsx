@@ -5,24 +5,37 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      history: null,
-      currentScore: null
+      history: [],
+      currentScore: null,
+      currentFrame: null
     };
     this.scoreTrack = this.scoreTrack.bind(this);
   }
 
   scoreTrack(e) {
-    return this.state.history
+    return this.state.currentFrame
       ? (() => {
-          let arr = this.state.history;
-          arr.push(e);
-          this.setState({
-            history: arr
-          });
+          let tempCurrentFrame = this.state.currentFrame;
+          tempCurrentFrame.push(+e);
+          console.log(tempCurrentFrame);
+          return this.state.history
+            ? (() => {
+                let tempHistory = this.state.history;
+                console.log(tempCurrentFrame);
+                tempHistory.push(tempCurrentFrame);
+                this.setState({
+                  history: tempHistory,
+                  currentFrame: null
+                });
+              })()
+            : null;
         })()
-      : this.setState({
-          history: [e]
-        });
+      : (() => {
+          console.log("3aelriurfh");
+          this.setState({
+            currentFrame: [+e]
+          });
+        })();
   }
 
   render() {
@@ -31,7 +44,10 @@ class App extends React.Component {
     ) : (
       <div>
         <div id="scoreHolder">
-          <Frames />
+          <Frames
+            currentScore={this.state.currentScore}
+            history={this.state.history}
+          />
         </div>
         <div id="buttonHolder">
           <button value="1" onClick={() => this.scoreTrack(event.target.value)}>
