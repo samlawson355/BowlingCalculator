@@ -107,7 +107,8 @@ class App extends React.Component {
     this.setState({
       history: [],
       spare: false,
-      strike: false
+      strike: false,
+      frameNum: 1
     });
   }
 
@@ -122,6 +123,7 @@ class App extends React.Component {
     ) : (
       <div>
         <div id="scoreHolder">
+          <div>{`Score: ${this.getScore()}`}</div>
           {this.state.history.map((frame, key) => (
             <Frames
               key={key}

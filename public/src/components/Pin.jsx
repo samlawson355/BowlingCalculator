@@ -10,8 +10,6 @@ const Pin = props => (
         ? (() => {
             props.spareReset();
             props.prevFrameChange(event.target.value);
-            console.log(event.target.value);
-
             props.scoreTrack(event.target.value);
           })()
         : props.scoreTrack(event.target.value);
