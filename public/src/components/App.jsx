@@ -78,10 +78,9 @@ class App extends React.Component {
           })()
       : (() => {
           console.log(e);
-          let tempCurrentFrame = [+e];
 
           let tempHistory = this.state.history;
-          tempHistory.push(tempCurrentFrame);
+          tempHistory.push([+e]);
           console.log(tempHistory);
           this.setState({
             history: tempHistory,
@@ -132,11 +131,21 @@ class App extends React.Component {
     });
   }
 
-  strikeReset() {
+  prevFrameChange2(e) {
+    let arr = this.state.history;
+    let frame = this.state.frameNum;
+    arr[frame - 2][1] = +arr[frame - 2][1];
+    arr[frame - 2][1] += +e;
     this.setState({
-      strike: false
+      history: arr
     });
   }
+
+  // strikeReset() {
+  //   this.setState({
+  //     strike: false
+  //   });
+  // }
 
   spareReset() {
     this.setState({

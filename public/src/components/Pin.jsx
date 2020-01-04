@@ -5,6 +5,7 @@ const Pin = props => (
     value={props.pinNum}
     onClick={() => {
       props.pinUpdate(event.target.value);
+      // TODO: implement strike functionality
       props.spare && !props.currentFrame
         ? (() => {
             props.spareReset();
