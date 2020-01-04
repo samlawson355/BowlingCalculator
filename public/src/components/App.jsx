@@ -23,38 +23,53 @@ class App extends React.Component {
   }
 
   scoreTrack(e) {
-    return this.state.currentFrame
-      ? (() => {
-          let tempCurrentFrame = this.state.currentFrame;
-          tempCurrentFrame.push(+e);
-          let tempHistory = this.state.history;
-          tempHistory.push(tempCurrentFrame);
+    +e !== 10
+      ? this.state.currentFrame
+        ? (() => {
+            let tempCurrentFrame = this.state.currentFrame;
+            tempCurrentFrame.push(+e);
+            let tempHistory = this.state.history;
+            tempHistory.push(tempCurrentFrame);
 
-          // check if spare
-          if (this.state.spare) {
-            if (tempCurrentFrame[0] + tempCurrentFrame[1] === 20) {
-              this.setState({
-                spare: true
-              });
+            // check if spare
+            // this.state.spare
+            //   ? tempCurrentFrame[0] + tempCurrentFrame[1] === 20
+            //     ? this.setState({
+            //         spare: true
+            //       })
+            //     : null
+            //   : tempCurrentFrame[0] + tempCurrentFrame[1] === 10
+            //   ? this.setState({
+            //       spare: true
+            //     })
+            //   : null;
+
+            if (this.state.spare) {
+              if (tempCurrentFrame[0] + tempCurrentFrame[1] === 20) {
+                this.setState({
+                  spare: true
+                });
+              }
+            } else {
+              if (tempCurrentFrame[0] + tempCurrentFrame[1] === 10) {
+                this.setState({
+                  spare: true
+                });
+              }
             }
-          } else {
-            if (tempCurrentFrame[0] + tempCurrentFrame[1] === 10) {
-              this.setState({
-                spare: true
-              });
-            }
-          }
-          this.setState({
-            history: tempHistory,
-            currentFrame: null,
-            frameNum: this.state.frameNum + 1
-          });
-        })()
-      : (() => {
-          this.setState({
-            currentFrame: [+e]
-          });
-        })();
+
+            this.setState({
+              history: tempHistory,
+              currentFrame: null,
+              frameNum: this.state.frameNum + 1
+            });
+          })()
+        : (() => {
+            this.setState({
+              currentFrame: [+e]
+            });
+          })()
+      : console.log("10101010");
   }
 
   pinUpdate(e) {
@@ -97,6 +112,12 @@ class App extends React.Component {
     });
   }
 
+  strikeReset() {
+    this.setState({
+      strike: false
+    });
+  }
+
   spareReset() {
     this.setState({
       spare: false
@@ -113,14 +134,7 @@ class App extends React.Component {
   }
 
   render() {
-    return this.state.history && this.state.history.length === 10 ? (
-      <div>
-        <div>{`Game over. Your score: ${this.getScore()}`}</div>
-        <div>
-          <button onClick={this.reset}>Play again?</button>
-        </div>
-      </div>
-    ) : (
+    return (
       <div>
         <div id="scoreHolder">
           <div>{`Score: ${this.getScore()}`}</div>
@@ -133,20 +147,31 @@ class App extends React.Component {
             />
           ))}
         </div>
-        <div id="buttonHolder">
-          {this.state.availPins.map(key => (
-            <Pin
-              key={key}
-              pinNum={key}
-              scoreTrack={this.scoreTrack}
-              pinUpdate={this.pinUpdate}
-              spare={this.state.spare}
-              spareReset={this.spareReset}
-              frameNum={this.state.frameNum}
-              currentFrame={this.state.currentFrame}
-              prevFrameChange={this.prevFrameChange}
-            />
-          ))}
+        <div id="belowScoreBoard">
+          {this.state.history && this.state.history.length === 10 ? (
+            <div id="gameOver">
+              <div>{`Game over. Your score: ${this.getScore()}`}</div>
+              <div>
+                <button onClick={this.reset}>Play again?</button>
+              </div>
+            </div>
+          ) : (
+            <div id="buttonHolder">
+              {this.state.availPins.map(key => (
+                <Pin
+                  key={key}
+                  pinNum={key}
+                  scoreTrack={this.scoreTrack}
+                  pinUpdate={this.pinUpdate}
+                  spare={this.state.spare}
+                  spareReset={this.spareReset}
+                  frameNum={this.state.frameNum}
+                  currentFrame={this.state.currentFrame}
+                  prevFrameChange={this.prevFrameChange}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     );
