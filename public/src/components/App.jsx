@@ -17,11 +17,9 @@ class App extends React.Component {
       ? (() => {
           let tempCurrentFrame = this.state.currentFrame;
           tempCurrentFrame.push(+e);
-          console.log(tempCurrentFrame);
           return this.state.history
             ? (() => {
                 let tempHistory = this.state.history;
-                console.log(tempCurrentFrame);
                 tempHistory.push(tempCurrentFrame);
                 this.setState({
                   history: tempHistory,
@@ -31,7 +29,6 @@ class App extends React.Component {
             : null;
         })()
       : (() => {
-          console.log("3aelriurfh");
           this.setState({
             currentFrame: [+e]
           });
@@ -44,10 +41,15 @@ class App extends React.Component {
     ) : (
       <div>
         <div id="scoreHolder">
-          <Frames
-            currentScore={this.state.currentScore}
-            history={this.state.history}
-          />
+          {this.state.history.map((frame, key) => (
+            <Frames
+              frame={frame}
+              key={key}
+              frameNum={key}
+              currentScore={this.state.currentScore}
+              history={this.state.history}
+            />
+          ))}
         </div>
         <div id="buttonHolder">
           <button value="1" onClick={() => this.scoreTrack(event.target.value)}>
