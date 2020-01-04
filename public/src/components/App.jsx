@@ -9,12 +9,15 @@ class App extends React.Component {
       history: [],
       availPins: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
       currentFrame: null,
-      midFrame: false
+      midFrame: false,
+      strike: false,
+      spare: false
     };
     this.scoreTrack = this.scoreTrack.bind(this);
     this.pinUpdate = this.pinUpdate.bind(this);
     this.getScore = this.getScore.bind(this);
     this.reset = this.reset.bind(this);
+    this.spareReset = this.spareReset.bind(this);
   }
 
   scoreTrack(e) {
@@ -24,6 +27,23 @@ class App extends React.Component {
           tempCurrentFrame.push(+e);
           let tempHistory = this.state.history;
           tempHistory.push(tempCurrentFrame);
+
+          // check if spare
+          if (this.state.spare) {
+            if (tempCurrentFrame[0] + tempCurrentFrame[1] === 20) {
+              console.log("leiwurfh");
+              this.setState({
+                spare: true
+              });
+            }
+          } else {
+            if (tempCurrentFrame[0] + tempCurrentFrame[1] === 10) {
+              this.setState({
+                spare: true
+              });
+            }
+          }
+
           this.setState({
             history: tempHistory,
             currentFrame: null
@@ -65,9 +85,16 @@ class App extends React.Component {
     return total;
   }
 
+  spareReset() {
+    this.setState({
+      spare: false
+    });
+  }
+
   reset() {
     this.setState({
-      history: []
+      history: [],
+      spare: false
     });
   }
 
@@ -98,6 +125,8 @@ class App extends React.Component {
               pinNum={key}
               scoreTrack={this.scoreTrack}
               pinUpdate={this.pinUpdate}
+              spare={this.state.spare}
+              spareReset={this.spareReset}
             />
           ))}
         </div>

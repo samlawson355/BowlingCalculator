@@ -6,6 +6,12 @@ const Pin = props => (
     onClick={() => {
       props.pinUpdate(event.target.value);
       props.scoreTrack(event.target.value);
+      props.spare
+        ? (() => {
+            // props.spareReset();
+            props.scoreTrack(+event.target.value + 10);
+          })()
+        : null;
     }}
   >
     {`${props.pinNum} ${props.pinNum === 1 ? "pin" : "pins"}`}
