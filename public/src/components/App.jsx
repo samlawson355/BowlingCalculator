@@ -23,7 +23,7 @@ class App extends React.Component {
   }
 
   scoreTrack(e) {
-    +e !== 10
+    return +e !== 10
       ? this.state.currentFrame
         ? (() => {
             let tempCurrentFrame = this.state.currentFrame;
@@ -45,13 +45,19 @@ class App extends React.Component {
             //   : null;
 
             if (this.state.spare) {
-              if (tempCurrentFrame[0] + tempCurrentFrame[1] === 20) {
+              if (
+                tempCurrentFrame[1] &&
+                tempCurrentFrame[0] + tempCurrentFrame[1] === 20
+              ) {
                 this.setState({
                   spare: true
                 });
               }
             } else {
-              if (tempCurrentFrame[0] + tempCurrentFrame[1] === 10) {
+              if (
+                tempCurrentFrame[1] &&
+                tempCurrentFrame[0] + tempCurrentFrame[1] === 10
+              ) {
                 this.setState({
                   spare: true
                 });
@@ -69,7 +75,19 @@ class App extends React.Component {
               currentFrame: [+e]
             });
           })()
-      : console.log("10101010");
+      : (() => {
+          let tempCurrentFrame = [+e];
+
+          let tempHistory = this.state.history;
+          tempHistory.push(tempCurrentFrame);
+          console.log(tempHistory);
+          this.setState({
+            spare: false,
+            currentFrame: null,
+            midFrame: false,
+            frameNum: this.state.frameNum + 1
+          });
+        })();
   }
 
   pinUpdate(e) {
@@ -104,7 +122,6 @@ class App extends React.Component {
   prevFrameChange(e) {
     let arr = this.state.history;
     let frame = this.state.frameNum;
-
     arr[frame - 2][0] = +arr[frame - 2][0];
     arr[frame - 2][0] += +e;
     this.setState({
