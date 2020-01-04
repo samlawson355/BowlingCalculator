@@ -20,16 +20,12 @@ class App extends React.Component {
       ? (() => {
           let tempCurrentFrame = this.state.currentFrame;
           tempCurrentFrame.push(+e);
-          return this.state.history
-            ? (() => {
-                let tempHistory = this.state.history;
-                tempHistory.push(tempCurrentFrame);
-                this.setState({
-                  history: tempHistory,
-                  currentFrame: null
-                });
-              })()
-            : null;
+          let tempHistory = this.state.history;
+          tempHistory.push(tempCurrentFrame);
+          this.setState({
+            history: tempHistory,
+            currentFrame: null
+          });
         })()
       : (() => {
           this.setState({
@@ -38,7 +34,9 @@ class App extends React.Component {
         })();
   }
 
-  pinUpdate(e) {}
+  pinUpdate(e) {
+    console.log("pin run");
+  }
 
   render() {
     return this.state.history && this.state.history.length === 10 ? (
@@ -58,7 +56,12 @@ class App extends React.Component {
         </div>
         <div id="buttonHolder">
           {this.state.availPins.map(key => (
-            <Pin key={key} pinNum={key} scoreTrack={this.scoreTrack} />
+            <Pin
+              key={key}
+              pinNum={key}
+              scoreTrack={this.scoreTrack}
+              pinUpdate={this.pinUpdate}
+            />
           ))}
         </div>
       </div>
