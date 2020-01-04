@@ -26,6 +26,7 @@ class App extends React.Component {
     return +e !== 10
       ? this.state.currentFrame
         ? (() => {
+            console.log("currrr");
             let tempCurrentFrame = this.state.currentFrame;
             tempCurrentFrame.push(+e);
             let tempHistory = this.state.history;
@@ -76,15 +77,17 @@ class App extends React.Component {
             });
           })()
       : (() => {
+          console.log(e);
           let tempCurrentFrame = [+e];
 
           let tempHistory = this.state.history;
           tempHistory.push(tempCurrentFrame);
           console.log(tempHistory);
           this.setState({
-            spare: false,
-            currentFrame: null,
+            history: tempHistory,
             midFrame: false,
+            availPins: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            currentFrame: null,
             frameNum: this.state.frameNum + 1
           });
         })();
