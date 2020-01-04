@@ -5,13 +5,16 @@ const Pin = props => (
     value={props.pinNum}
     onClick={() => {
       props.pinUpdate(event.target.value);
-      props.scoreTrack(event.target.value);
-      props.spare
+
+      props.spare && !props.currentFrame
         ? (() => {
-            // props.spareReset();
-            props.scoreTrack(+event.target.value + 10);
+            props.spareReset();
+            props.prevFrameChange(event.target.value);
+            console.log(event.target.value);
+
+            props.scoreTrack(event.target.value);
           })()
-        : null;
+        : props.scoreTrack(event.target.value);
     }}
   >
     {`${props.pinNum} ${props.pinNum === 1 ? "pin" : "pins"}`}
