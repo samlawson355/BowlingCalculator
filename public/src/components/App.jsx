@@ -8,11 +8,13 @@ class App extends React.Component {
     this.state = {
       history: [],
       availPins: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      currentScore: null,
-      currentFrame: null
+      currentFrame: null,
+      midFrame: false
     };
     this.scoreTrack = this.scoreTrack.bind(this);
     this.pinUpdate = this.pinUpdate.bind(this);
+    this.getScore = this.getScore.bind(this);
+    this.reset = this.reset.bind(this);
   }
 
   scoreTrack(e) {
@@ -35,12 +37,48 @@ class App extends React.Component {
   }
 
   pinUpdate(e) {
-    console.log("pin run");
+    return !this.state.midFrame
+      ? (() => {
+          let avail = [];
+          for (let i = 0; i <= 10 - e; i++) {
+            avail.push(i);
+          }
+          this.setState({
+            availPins: avail,
+            midFrame: true
+          });
+        })()
+      : (() => {
+          this.setState({
+            availPins: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            midFrame: false
+          });
+        })();
+  }
+
+  getScore() {
+    let arr = this.state.history.flat(Infinity);
+    let total = 0;
+    for (let i = 0; i < arr.length; i++) {
+      total += arr[i];
+    }
+    return total;
+  }
+
+  reset() {
+    this.setState({
+      history: []
+    });
   }
 
   render() {
     return this.state.history && this.state.history.length === 10 ? (
-      <div>Game Over</div>
+      <div>
+        <div>{`Game over. Your score: ${this.getScore()}`}</div>
+        <div>
+          <button onClick={this.reset}>Play again?</button>
+        </div>
+      </div>
     ) : (
       <div>
         <div id="scoreHolder">
@@ -49,7 +87,6 @@ class App extends React.Component {
               key={key}
               frame={frame}
               frameNum={key}
-              currentScore={this.state.currentScore}
               history={this.state.history}
             />
           ))}
