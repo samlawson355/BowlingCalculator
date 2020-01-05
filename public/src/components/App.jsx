@@ -20,13 +20,13 @@ class App extends React.Component {
     this.reset = this.reset.bind(this);
     this.spareReset = this.spareReset.bind(this);
     this.prevFrameChange = this.prevFrameChange.bind(this);
+    this.prevFrameChange2 = this.prevFrameChange2.bind(this);
   }
 
   scoreTrack(e) {
     return +e !== 10
       ? this.state.currentFrame
         ? (() => {
-            console.log("currrr");
             let tempCurrentFrame = this.state.currentFrame;
             tempCurrentFrame.push(+e);
             let tempHistory = this.state.history;
@@ -77,11 +77,8 @@ class App extends React.Component {
             });
           })()
       : (() => {
-          console.log(e);
-
           let tempHistory = this.state.history;
           tempHistory.push([+e]);
-          console.log(tempHistory);
           this.setState({
             history: tempHistory,
             midFrame: false,
@@ -197,6 +194,7 @@ class App extends React.Component {
                   frameNum={this.state.frameNum}
                   currentFrame={this.state.currentFrame}
                   prevFrameChange={this.prevFrameChange}
+                  prevFrameChange2={this.prevFrameChange2}
                 />
               ))}
             </div>
