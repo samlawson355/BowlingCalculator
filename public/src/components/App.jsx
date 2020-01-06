@@ -28,6 +28,9 @@ class App extends React.Component {
   scoreTrack(e) {
     if (this.state.lastIsStrike) {
       this.lastStrikeHandle(e);
+    }
+
+    if (this.state.lastIsStrike && this.state.currentFrame) {
       this.lastStrikeHandle2(e);
     }
 
@@ -104,12 +107,6 @@ class App extends React.Component {
     });
   }
 
-  // strikeReset() {
-  //   this.setState({
-  //     lastIsStrike: false
-  //   });
-  // }
-
   spareCheck() {
     let tempCurrentFrame = this.state.currentFrame;
     if (this.state.spare) {
@@ -140,14 +137,14 @@ class App extends React.Component {
     +e === 10
       ? this.lastStrikeHandle2(e)
       : this.setState({
-          history: arr,
-          lastIsStrike: +e === 10 ? true : false
+          history: arr
         });
   }
   lastStrikeHandle2(e) {
     let arr = this.state.history;
     let frame = this.state.frameNum;
     arr[frame - 2][1] = +e;
+
     this.setState({
       history: arr,
       midFrame: false,
