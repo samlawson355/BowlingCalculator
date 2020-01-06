@@ -27,10 +27,6 @@ class App extends React.Component {
   }
 
   scoreTrack(e) {
-    if (this.state.frameNum === 10) {
-      console.log("tenth fram");
-    }
-
     if (this.state.lastIsStrike) {
       this.lastStrikeHandle(e);
     }
@@ -105,21 +101,23 @@ class App extends React.Component {
           midFrame: true
         });
       } else {
+        if (this.state.spare) {
+          // if we had a spare in frame 10
+          tempCurrentFrame[1] += +e;
+          this.setState({
+            currentFrame: tempCurrentFrame
+          });
+        }
         // not spare in final frame (which means game over)
         tempCurrentFrame.push(+e);
         tempHistory.push(tempCurrentFrame);
         // ! handle final frame with three spots here
-        this.setState(
-          {
-            // history: tempHistory,
-            midFrame: false,
-            currentFrame: tempCurrentFrame,
-            frameNum: 10
-          },
-          tempCurrentFrame.length === 2
-            ? () => tempHistory.push(tempCurrentFrame)
-            : this.pinUpdate(+e)
-        );
+        this.setState({
+          history: tempHistory,
+          midFrame: false,
+          currentFrame: tempCurrentFrame,
+          frameNum: 10
+        });
       }
     } else {
       // if beginning of 10th frame (strike possible)
