@@ -110,7 +110,11 @@ class App extends React.Component {
       }
     } else {
       if (+e === 10) {
-        console.log("10th frame strike");
+        this.setState({
+          availPins: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+          midFrame: true,
+          currentFrame: [+e]
+        });
       } else {
         this.setState(
           {
@@ -201,7 +205,9 @@ class App extends React.Component {
       history: [],
       spare: false,
       lastIsStrike: false,
-      frameNum: 1
+      frameNum: 1,
+      midFrame: false,
+      currentFrame: null
     });
   }
 
