@@ -11,7 +11,7 @@ class App extends React.Component {
       currentFrame: null,
       frameNum: 1,
       midFrame: false,
-      strike: false,
+      lastIsStrike: false,
       spare: false
     };
     this.scoreTrack = this.scoreTrack.bind(this);
@@ -31,19 +31,6 @@ class App extends React.Component {
             tempCurrentFrame.push(+e);
             let tempHistory = this.state.history;
             tempHistory.push(tempCurrentFrame);
-
-            // check if spare
-            // this.state.spare
-            //   ? tempCurrentFrame[0] + tempCurrentFrame[1] === 20
-            //     ? this.setState({
-            //         spare: true
-            //       })
-            //     : null
-            //   : tempCurrentFrame[0] + tempCurrentFrame[1] === 10
-            //   ? this.setState({
-            //       spare: true
-            //     })
-            //   : null;
 
             if (this.state.spare) {
               if (
@@ -68,7 +55,8 @@ class App extends React.Component {
             this.setState({
               history: tempHistory,
               currentFrame: null,
-              frameNum: this.state.frameNum + 1
+              frameNum: this.state.frameNum + 1,
+              lastIsStrike: false
             });
           })()
         : (() => {
@@ -84,7 +72,8 @@ class App extends React.Component {
             midFrame: false,
             availPins: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             currentFrame: null,
-            frameNum: this.state.frameNum + 1
+            frameNum: this.state.frameNum + 1,
+            lastIsStrike: true
           });
         })();
   }
@@ -140,7 +129,7 @@ class App extends React.Component {
 
   // strikeReset() {
   //   this.setState({
-  //     strike: false
+  //     lastIsStrike: false
   //   });
   // }
 
@@ -154,7 +143,7 @@ class App extends React.Component {
     this.setState({
       history: [],
       spare: false,
-      strike: false,
+      lastIsStrike: false,
       frameNum: 1
     });
   }

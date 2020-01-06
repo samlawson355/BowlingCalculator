@@ -3,9 +3,7 @@ import React from "react";
 class Pin extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      lastIsStrike: false
-    };
+    this.state = {};
   }
 
   render() {
