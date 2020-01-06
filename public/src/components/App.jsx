@@ -22,16 +22,11 @@ class App extends React.Component {
     this.prevFrameChange = this.prevFrameChange.bind(this);
     this.spareCheck = this.spareCheck.bind(this);
     this.lastStrikeHandle = this.lastStrikeHandle.bind(this);
-    this.lastStrikeHandle2 = this.lastStrikeHandle2.bind(this);
   }
 
   scoreTrack(e) {
     if (this.state.lastIsStrike) {
       this.lastStrikeHandle(e);
-    }
-
-    if (this.state.lastIsStrike && this.state.currentFrame) {
-      this.lastStrikeHandle2(e);
     }
 
     +e !== 10
