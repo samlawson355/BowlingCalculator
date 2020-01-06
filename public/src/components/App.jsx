@@ -20,10 +20,17 @@ class App extends React.Component {
     this.reset = this.reset.bind(this);
     this.spareReset = this.spareReset.bind(this);
     this.prevFrameChange = this.prevFrameChange.bind(this);
-    this.prevFrameChange2 = this.prevFrameChange2.bind(this);
+    this.spareCheck = this.spareCheck.bind(this);
+    this.lastStrikeHandle = this.lastStrikeHandle.bind(this);
+    this.lastStrikeHandle2 = this.lastStrikeHandle2.bind(this);
   }
 
   scoreTrack(e) {
+    if (this.state.lastIsStrike) {
+      this.lastStrikeHandle(e);
+      this.lastStrikeHandle2(e);
+    }
+
     +e !== 10
       ? this.state.currentFrame
         ? (() => {
@@ -31,27 +38,7 @@ class App extends React.Component {
             tempCurrentFrame.push(+e);
             let tempHistory = this.state.history;
             tempHistory.push(tempCurrentFrame);
-
-            if (this.state.spare) {
-              if (
-                tempCurrentFrame[1] &&
-                tempCurrentFrame[0] + tempCurrentFrame[1] === 20
-              ) {
-                this.setState({
-                  spare: true
-                });
-              }
-            } else {
-              if (
-                tempCurrentFrame[1] &&
-                tempCurrentFrame[0] + tempCurrentFrame[1] === 10
-              ) {
-                this.setState({
-                  spare: true
-                });
-              }
-            }
-
+            this.spareCheck();
             this.setState({
               history: tempHistory,
               currentFrame: null,
@@ -59,13 +46,11 @@ class App extends React.Component {
               lastIsStrike: false
             });
           })()
-        : !this.state.lastIsStrike
-        ? (() => {
+        : (() => {
             this.setState({
               currentFrame: [+e]
             });
           })()
-        : (() => {})()
       : (() => {
           let tempHistory = this.state.history;
           tempHistory.push([+e]);
@@ -119,21 +104,57 @@ class App extends React.Component {
     });
   }
 
-  prevFrameChange2(e) {
-    let arr = this.state.history;
-    let frame = this.state.frameNum;
-    arr[frame - 2][1] = +arr[frame - 2][1];
-    arr[frame - 2][1] += +e;
-    this.setState({
-      history: arr
-    });
-  }
-
   // strikeReset() {
   //   this.setState({
   //     lastIsStrike: false
   //   });
   // }
+
+  spareCheck() {
+    let tempCurrentFrame = this.state.currentFrame;
+    if (this.state.spare) {
+      if (
+        tempCurrentFrame[1] &&
+        tempCurrentFrame[0] + tempCurrentFrame[1] === 20
+      ) {
+        this.setState({
+          spare: true
+        });
+      }
+    } else {
+      if (
+        tempCurrentFrame[1] &&
+        tempCurrentFrame[0] + tempCurrentFrame[1] === 10
+      ) {
+        this.setState({
+          spare: true
+        });
+      }
+    }
+  }
+
+  lastStrikeHandle(e) {
+    let arr = this.state.history;
+    let frame = this.state.frameNum;
+    arr[frame - 2][0] += +e;
+    +e === 10
+      ? this.lastStrikeHandle2(e)
+      : this.setState({
+          history: arr,
+          lastIsStrike: +e === 10 ? true : false
+        });
+  }
+  lastStrikeHandle2(e) {
+    let arr = this.state.history;
+    let frame = this.state.frameNum;
+    arr[frame - 2][1] = +e;
+    this.setState({
+      history: arr,
+      midFrame: false,
+      lastIsStrike: false,
+      frameNum: this.state.frameNum
+    });
+  }
 
   spareReset() {
     this.setState({
@@ -185,7 +206,6 @@ class App extends React.Component {
                   frameNum={this.state.frameNum}
                   currentFrame={this.state.currentFrame}
                   prevFrameChange={this.prevFrameChange}
-                  prevFrameChange2={this.prevFrameChange2}
                 />
               ))}
             </div>

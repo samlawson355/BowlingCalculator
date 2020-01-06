@@ -12,16 +12,6 @@ class Pin extends React.Component {
         value={this.props.pinNum}
         onClick={() => {
           this.props.pinUpdate(event.target.value);
-          // TODO: implement strike functionality
-          // this.state.lastIsStrike
-          //   ? (() => {
-          //       console.log("awleifhu");
-          //       this.props.prevFrameChange2(event.target.value);
-          //       this.setState({
-          //         lastIsStrike: false
-          //       });
-          //     })()
-          //   : null;
 
           this.props.spare && !this.props.currentFrame
             ? (() => {
