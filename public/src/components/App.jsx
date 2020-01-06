@@ -90,26 +90,31 @@ class App extends React.Component {
   }
 
   scoreTrackTenth(e) {
+    console.log(this.state.frameNum);
+    console.log(this.state.currentFrame);
     let tempHistory = this.state.history;
     if (this.state.currentFrame) {
       let tempCurrentFrame = this.state.currentFrame;
 
-      if (tempCurrentFrame[0] + +e === 10) {
-        //spare in final frame
+      if (+e && tempCurrentFrame[0] + +e === 10) {
+        //spare in final frame and not 0 + 10
         this.setState({
           currentFrame: [tempCurrentFrame[0], +e],
           availPins: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         });
       } else {
+        // not spare in final frame (which means game over)
         tempCurrentFrame.push(+e);
-        tempHistory.push(tempCurrentFrame);
+        // ! handle final frame with three spots here
         this.setState({
-          history: tempHistory,
+          // history: tempHistory,
           currentFrame: tempCurrentFrame
         });
       }
     } else {
+      // if beginning of 10th frame (strike possible)
       if (+e === 10) {
+        // if strike as first roll in last frame
         this.setState({
           availPins: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
           midFrame: true,
@@ -203,11 +208,12 @@ class App extends React.Component {
   reset() {
     this.setState({
       history: [],
-      spare: false,
-      lastIsStrike: false,
+      availPins: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      currentFrame: null,
       frameNum: 1,
       midFrame: false,
-      currentFrame: null
+      lastIsStrike: false,
+      spare: false
     });
   }
 
