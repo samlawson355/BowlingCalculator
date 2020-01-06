@@ -24,7 +24,7 @@ class App extends React.Component {
   }
 
   scoreTrack(e) {
-    return +e !== 10
+    +e !== 10
       ? this.state.currentFrame
         ? (() => {
             let tempCurrentFrame = this.state.currentFrame;
@@ -59,11 +59,13 @@ class App extends React.Component {
               lastIsStrike: false
             });
           })()
-        : (() => {
+        : !this.state.lastIsStrike
+        ? (() => {
             this.setState({
               currentFrame: [+e]
             });
           })()
+        : (() => {})()
       : (() => {
           let tempHistory = this.state.history;
           tempHistory.push([+e]);

@@ -2,7 +2,7 @@ import React from "react";
 
 const Frames = props => (
   <div>
-    {props.frame[0] === 10
+    {!props.frame[1] && props.frame[0] === 10
       ? `Frame ${props.frameNum + 1}: ${props.frame[0]}`
       : `Frame ${props.frameNum + 1}: ${props.frame[0]} and ${props.frame[1]}`}
   </div>
