@@ -22,9 +22,15 @@ class App extends React.Component {
     this.prevFrameChange = this.prevFrameChange.bind(this);
     this.spareCheck = this.spareCheck.bind(this);
     this.lastStrikeHandle = this.lastStrikeHandle.bind(this);
+    this.scoreTrackTenth = this.scoreTrackTenth.bind(this);
+    this.pinUpdateTenth = this.pinUpdateTenth.bind(this);
   }
 
   scoreTrack(e) {
+    if (this.state.frameNum === 10) {
+      console.log("tenth fram");
+    }
+
     if (this.state.lastIsStrike) {
       this.lastStrikeHandle(e);
     }
@@ -81,6 +87,42 @@ class App extends React.Component {
             midFrame: false
           });
         })();
+  }
+
+  scoreTrackTenth(e) {
+    let tempHistory = this.state.history;
+    if (this.state.currentFrame) {
+      let tempCurrentFrame = this.state.currentFrame;
+
+      if (tempCurrentFrame[0] + +e === 10) {
+        //spare in final frame
+        this.setState({
+          currentFrame: [tempCurrentFrame[0], +e],
+          availPins: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        });
+      } else {
+        tempCurrentFrame.push(+e);
+        tempHistory.push(tempCurrentFrame);
+        this.setState({
+          history: tempHistory,
+          currentFrame: tempCurrentFrame
+        });
+      }
+    } else {
+      if (+e === 10) {
+        console.log("10th frame strike");
+      } else {
+        this.setState(
+          {
+            currentFrame: [+e]
+          },
+          () => this.pinUpdate(e)
+        );
+      }
+    }
+  }
+  pinUpdateTenth(e) {
+    console.log("pin10");
   }
 
   getScore() {
@@ -192,7 +234,9 @@ class App extends React.Component {
                   key={key}
                   pinNum={key}
                   scoreTrack={this.scoreTrack}
+                  scoreTrackTenth={this.scoreTrackTenth}
                   pinUpdate={this.pinUpdate}
+                  pinUpdateTenth={this.pinUpdateTenth}
                   spare={this.state.spare}
                   spareReset={this.spareReset}
                   frameNum={this.state.frameNum}
