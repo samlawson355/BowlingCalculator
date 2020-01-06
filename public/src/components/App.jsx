@@ -86,6 +86,9 @@ class App extends React.Component {
   }
 
   scoreTrackTenth(e) {
+    if (this.state.lastIsStrike) {
+      this.lastStrikeHandle(e);
+    }
     let tempHistory = this.state.history;
 
     if (this.state.currentFrame) {
@@ -123,10 +126,13 @@ class App extends React.Component {
       // if beginning of 10th frame (strike possible)
       if (+e === 10) {
         // if strike as first roll in last frame
+        console.log("strike in 10th");
+
         this.setState({
           availPins: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
           midFrame: true,
-          currentFrame: [+e]
+          currentFrame: [+e],
+          lastIsStrike: true
         });
       } else {
         this.setState(
@@ -138,6 +144,7 @@ class App extends React.Component {
       }
     }
   }
+
   pinUpdateTenth(e) {
     console.log("pin10");
   }
@@ -194,10 +201,11 @@ class App extends React.Component {
           history: arr
         });
   }
+
   lastStrikeHandle2(e) {
     let arr = this.state.history;
     let frame = this.state.frameNum;
-    arr[frame - 2][1] = +e;
+    arr[frame - 2][1] += +e;
 
     this.setState({
       history: arr,
