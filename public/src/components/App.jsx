@@ -28,6 +28,7 @@ class App extends React.Component {
 
   scoreTrack(e) {
     if (this.state.lastIsStrike) {
+      console.log("last");
       this.lastStrikeHandle(e);
     }
 
@@ -36,8 +37,10 @@ class App extends React.Component {
         ? (() => {
             let tempCurrentFrame = this.state.currentFrame;
             tempCurrentFrame.push(+e);
+
             let tempHistory = this.state.history;
             tempHistory.push(tempCurrentFrame);
+            console.log(tempHistory);
             this.spareCheck();
             this.setState({
               history: tempHistory,
@@ -53,7 +56,9 @@ class App extends React.Component {
           })()
       : (() => {
           let tempHistory = this.state.history;
+
           tempHistory.push([+e]);
+
           this.setState({
             history: tempHistory,
             midFrame: false,
@@ -89,6 +94,7 @@ class App extends React.Component {
     if (this.state.lastIsStrike) {
       this.lastStrikeHandle(e);
     }
+
     let tempHistory = this.state.history;
 
     if (this.state.currentFrame) {
@@ -97,8 +103,9 @@ class App extends React.Component {
 
       if (+e && tempCurrentFrame[0] + +e === 10) {
         //spare in final frame and not 0 + 10
+        tempCurrentFrame.push(+e);
         this.setState({
-          currentFrame: [tempCurrentFrame[0], +e],
+          currentFrame: tempCurrentFrame,
           availPins: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
           spare: true,
           midFrame: true
@@ -107,6 +114,7 @@ class App extends React.Component {
         if (this.state.spare) {
           // if we had a spare in frame 10
           tempCurrentFrame[1] += +e;
+
           this.setState({
             currentFrame: tempCurrentFrame
           });
@@ -114,6 +122,7 @@ class App extends React.Component {
         // not spare in final frame (which means game over)
         tempCurrentFrame.push(+e);
         tempHistory.push(tempCurrentFrame);
+
         // ! handle final frame with three spots here
         this.setState({
           history: tempHistory,
@@ -127,7 +136,7 @@ class App extends React.Component {
       if (+e === 10) {
         // if strike as first roll in last frame
         console.log("strike in 10th");
-
+        console.log(e);
         this.setState({
           availPins: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
           midFrame: true,
@@ -153,7 +162,8 @@ class App extends React.Component {
     let arr = this.state.history.flat(Infinity);
     let total = 0;
     for (let i = 0; i < arr.length; i++) {
-      total += arr[i];
+      console.log(arr[i]);
+      total += +arr[i];
     }
     return total;
   }
@@ -196,7 +206,7 @@ class App extends React.Component {
     let frame = this.state.frameNum;
     arr[frame - 2][0] += +e;
     +e === 10
-      ? this.lastStrikeHandle2(e)
+      ? this.lastStrikeHandle2(+e)
       : this.setState({
           history: arr
         });
@@ -205,7 +215,8 @@ class App extends React.Component {
   lastStrikeHandle2(e) {
     let arr = this.state.history;
     let frame = this.state.frameNum;
-    arr[frame - 2][1] += +e;
+    arr[frame - 2][1] = +e;
+    console.log(arr);
 
     this.setState({
       history: arr,
